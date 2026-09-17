@@ -51,7 +51,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #endif     // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
 #define ENT_NAV LT(LAYER_NAVNUM, KC_ENT)
-#define TAB_SYM LT(LAYER_SYMBOLS, KC_TAB)
+#define SPC_SYM LT(LAYER_SYMBOLS, KC_SPC)
 #define ESC_FUN LT(LAYER_FUNMEDIA, KC_ESC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 
@@ -68,7 +68,7 @@ static uint16_t auto_pointer_layer_timer = 0;
        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y, KC_BSPC, \
        KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O, \
        KC_X,    KC_C,    KC_D,    KC_V,    KC_Z,    KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, \
-                      OS_LSFT, ENT_NAV, ESC_FUN, TAB_SYM,  KC_SPC
+                      OS_LSFT, ENT_NAV, ESC_FUN,  KC_TAB, SPC_SYM
 
 /** \brief Navigation and numeral layout. */
 #define LAYOUT_LAYER_NAVNUM                                                              \
@@ -81,13 +81,13 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
     XXXXXXX, KC_AMPR, KC_ASTR, KC_PIPE, XXXXXXX, KC_SCLN, KC_LCBR, KC_RCBR, KC_MINS, KC_PLUS, \
     XXXXXXX,  KC_DLR, KC_PERC, KC_CIRC, KC_TILD,  KC_EQL, KC_LPRN, KC_RPRN, KC_DQUO, KC_QUOT, \
-    XXXXXXX, KC_EXLM,   KC_AT, KC_HASH, XXXXXXX, KC_UNDS, KC_LBRC, KC_RBRC, KC_COLN, KC_BSLS, \
+    XXXXXXX, KC_EXLM,   KC_AT, KC_HASH, XXXXXXX, KC_BSLS, KC_LBRC, KC_RBRC, KC_COLN, KC_UNDS, \
                       ___________TRANSPARENT_THUMB_ROW___________
 
 /** \brief Function layer. */
 #define LAYOUT_LAYER_FUNMEDIA                                                                \
-    KC_F12,   KC_F7,   KC_F8,   KC_F9, KC_PSCR, XXXXXXX, XXXXXXX, KC_VOLU, XXXXXXX, QK_BOOT, \
-    KC_F11,   KC_F4,   KC_F5,   KC_F6, KC_SCRL, XXXXXXX, KC_MPRV, KC_VOLD, KC_MNXT,  EE_CLR, \
+    KC_F12,   KC_F7,   KC_F8,   KC_F9, KC_PSCR, XXXXXXX, XXXXXXX, KC_VOLU, XXXXXXX, XXXXXXX, \
+    KC_F11,   KC_F4,   KC_F5,   KC_F6, KC_SCRL, XXXXXXX, KC_MPRV, KC_VOLD, KC_MNXT, XXXXXXX, \
     KC_F10,   KC_F1,   KC_F2,   KC_F3, KC_PAUS, XXXXXXX, XXXXXXX, KC_MUTE, XXXXXXX, XXXXXXX, \
                       _______, _______, _______, KC_MSTP, KC_MPLY
 
