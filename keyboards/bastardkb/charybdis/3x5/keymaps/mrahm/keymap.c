@@ -72,7 +72,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 
 /** \brief Navigation and numeral layout. */
 #define LAYOUT_LAYER_NAVNUM                                                              \
-    XXXXXXX,    KC_7,    KC_8,    KC_9, XXXXXXX, XXXXXXX, KC_HOME,   KC_UP,  KC_END, KC_PGUP, \
+     KC_PWR,    KC_7,    KC_8,    KC_9, XXXXXXX, XXXXXXX, KC_HOME,   KC_UP,  KC_END, KC_PGUP, \
     XXXXXXX,    KC_4,    KC_5,    KC_6,KC_COMMA, XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, \
        KC_0,    KC_1,    KC_2,    KC_3,  KC_DOT, _______________DEAD_HALF_ROW_______________, \
                       ___________TRANSPARENT_THUMB_ROW___________
@@ -87,7 +87,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 /** \brief Function layer. */
 #define LAYOUT_LAYER_FUNMEDIA                                                                \
     KC_F12,   KC_F7,   KC_F8,   KC_F9, KC_PSCR, XXXXXXX, XXXXXXX, KC_VOLU, XXXXXXX, XXXXXXX, \
-    KC_F11,   KC_F4,   KC_F5,   KC_F6, KC_SCRL, XXXXXXX, KC_MPRV, KC_VOLD, KC_MNXT, XXXXXXX, \
+    KC_F11,   KC_F4,   KC_F5,   KC_F6, KC_SCRL, XXXXXXX, KC_MPRV, KC_VOLD, KC_MNXT, KC_MSEL, \
     KC_F10,   KC_F1,   KC_F2,   KC_F3, KC_PAUS, XXXXXXX, XXXXXXX, KC_MUTE, XXXXXXX, XXXXXXX, \
                       _______, _______, _______, KC_MSTP, KC_MPLY
 
