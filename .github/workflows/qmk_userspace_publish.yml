@@ -1,0 +1,64 @@
+name: Build Binaries
+
+on:
+  workflow_call:
+    inputs:
+      release_name:
+        description: "allow setting the release name"
+        default: "latest"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Publish
+    if: always() && !cancelled()
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-tags: true
+
+      - name: Download binaries
+        if: always() && !cancelled()
+        uses: actions/download-artifact@v8
+        with:
+          name: Firmware
+
+      # - name: Delete release
+        # run: gh release delete ${{ inputs.release_name || 'latest' }} --cleanup-tag || true
+        # env:
+        #   GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Get Previous tag
+        id: previoustag
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1'
+        with:
+          pattern: r*[0-9]
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get next version
+        id: next
+        uses: 'WyriHaximus/github-action-next-release-version@1.0.0'
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+
+      - name: Generate Release
+        uses: softprops/action-gh-release@v3
+        if: always() && !cancelled()
+        with:
+          token: ${{ github.token }}
+          name: BastardKB Firmware release ${{ steps.next.outputs.version }}
+          tag_name: ${{ steps.next.outputs.r_version }}
+          fail_on_unmatched_files: false
+          draft: false
+          prerelease: false
+          files: |
+            **/*.hex
+            **/*.bin
+            **/*.uf2
