@@ -64,7 +64,7 @@ static uint16_t auto_pointer_layer_timer = 0;
        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y, KC_BSPC, \
        KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O, \
        KC_X,    KC_C,    KC_D,    KC_V,    KC_Z,    KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, \
-                      XXXXXXX,  KC_ENT, ESC_NAV, TAB_SYM,  KC_SPC
+                      OS_LSFT,  KC_ENT, ESC_NAV, TAB_SYM,  KC_SPC
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
@@ -112,13 +112,7 @@ static uint16_t auto_pointer_layer_timer = 0;
        KC_0,    KC_1,    KC_2,    KC_3,  KC_DOT, _______________DEAD_HALF_ROW_______________, \
                       ___________TRANSPARENT_THUMB_ROW___________
 
-/**
- * \brief Symbols layer.
- *
- * Secondary left-hand layer has shifted symbols in the same locations to reduce
- * chording when using mods with shifted symbols. `KC_LPRN` is duplicated next to
- * `KC_RPRN`.
- */
+/** \brief Symbols layer. */
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
     XXXXXXX, KC_AMPR, KC_ASTR, KC_PIPE, XXXXXXX, KC_LBRC, KC_RBRC, XXXXXXX, KC_MINS,  KC_EQL, \
     XXXXXXX,  KC_DLR, KC_PERC, KC_CIRC, KC_TILD, KC_LPRN, KC_RPRN, XXXXXXX, KC_DQUO, KC_QUOT, \
@@ -196,6 +190,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_SYMBOLS] = LAYOUT_wrapper(HOME_ROW_MOD_GACS(LAYOUT_LAYER_SYMBOLS)),
 };
 // clang-format on
+
+/**
+ * \brief Process mod tap combinations that require 16 bit action codes.
+ *
+ * Mod tap and layer tap mask modifiers from keycodes. That also applies to special alias
+ * codes like KC_DLR etc.
+ *
+ * This can be circumvented by intercepting the action and sending the tapped code manually.
+ */
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LALT_T(KC_DLR):
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_DLR); // Send KC_DQUO on tap
+                return false;        // Return false to ignore further processing of key
+            }
+            break;
+    }
+    return true;
+}
 
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
