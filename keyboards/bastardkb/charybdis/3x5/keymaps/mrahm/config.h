@@ -21,22 +21,15 @@
 #    define DYNAMIC_KEYMAP_LAYER_COUNT 6
 #endif // VIA_ENABLE
 
-#ifndef __arm__
-/* Disable unused features. */
-#    define NO_ACTION_ONESHOT
-#endif // __arm__
+// #ifndef __arm__
+// /* Disable unused features. */
+// #    define NO_ACTION_ONESHOT
+// #endif // __arm__
 
-/* Charybdis-specific features. */
-
-#ifdef POINTING_DEVICE_ENABLE
-// Automatically enable the pointer layer when moving the trackball.  See also:
-// - `CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_TIMEOUT_MS`
-// - `CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD`
-// #define CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
-// #   define POINTING_DEVICE_HIRES_SCROLL_ENABLE
-// #   define POINTING_DEVICE_HIRES_SCROLL_MULTIPLIER 20
-// #   define POINTING_DEVICE_HIRES_SCROLL_EXPONENT 0
-#endif // POINTING_DEVICE_ENABLE
+#ifdef AUTO_MOUSE_DEFAULT_LAYER
+#undef AUTO_MOUSE_DEFAULT_LAYER
+#endif
+#define AUTO_MOUSE_DEFAULT_LAYER 4
 
 #define TAPPING_TERM 250
 #define CHORDAL_HOLD
