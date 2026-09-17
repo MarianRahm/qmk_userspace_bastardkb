@@ -12,9 +12,3 @@ jobs:
     with:
       qmk_repo: bastardkb/bastardkb-qmk
       qmk_ref: main
-
-  publish:
-    name: 'QMK Userspace Publish'
-    uses: bastardkb/qmk_userspace/.github/workflows/qmk_userspace_publish.yml@main
-    if: always() && !cancelled()
-    needs: build
