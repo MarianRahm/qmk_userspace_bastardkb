@@ -203,10 +203,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LALT_T(KC_DLR):
             if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_DLR); // Send KC_DQUO on tap
+                tap_code16(KC_DLR); // Send KC_DLR on tap
                 return false;        // Return false to ignore further processing of key
             }
             break;
+        case LALT_T(KC_DQUO):
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_DQUO);
+                return false;
+            }
+            break;
+        case LCTL_T(KC_PERC):
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_PERC);
+                return false;
+            }
+            break;
+        case LSFT_T(KC_CIRC):
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_CIRC);
+                return false;
+            }
+            break;
+        case RALT_T(KC_TILD):
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_TILD);
+                return false;
+            }
+            break;
+        // case RALT_T(KC_TILD):
+        //     if (record->tap.count && record->event.pressed) {
+        //         tap_code16(KC_TILD);
+        //         return false;
+        //     }
+        //     break;
     }
     return true;
 }
