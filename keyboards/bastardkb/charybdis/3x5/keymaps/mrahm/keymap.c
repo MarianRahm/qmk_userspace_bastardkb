@@ -20,13 +20,19 @@
 #    include "timer.h"
 #endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
+#ifndef POINTING_DEVICE_ENABLE
+#    define DRGSCRL KC_NO
+#    define DPI_MOD KC_NO
+#    define S_D_MOD KC_NO
+#    define SNIPING KC_NO
+#endif // !POINTING_DEVICE_ENABLE
+
 enum charybdis_keymap_layers {
     LAYER_BASE = 0,
-    LAYER_FUNCTION,
     LAYER_NAVNUM,
-    LAYER_MEDIA,
-    LAYER_POINTER,
     LAYER_SYMBOLS,
+    LAYER_FUNMEDIA,
+    LAYER_POINTER,
 };
 
 // Automatically enable sniping-mode on the pointer layer.
@@ -45,26 +51,11 @@ static uint16_t auto_pointer_layer_timer = 0;
 #endif     // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
 #define ESC_NAV LT(LAYER_NAVNUM, KC_ESC)
-// #define SPC_NAV LT(LAYER_NAVIGATION, KC_SPC)
 #define TAB_SYM LT(LAYER_SYMBOLS, KC_TAB)
-// #define ENT_SYM LT(LAYER_SYMBOLS, KC_ENT)
-// #define BSP_NUM LT(LAYER_NUMERAL, KC_BSPC)
+#define OSS_FUN LT(LAYER_FUNMEDIA, OS_LSFT)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 
-#ifndef POINTING_DEVICE_ENABLE
-#    define DRGSCRL KC_NO
-#    define DPI_MOD KC_NO
-#    define S_D_MOD KC_NO
-#    define SNIPING KC_NO
-#endif // !POINTING_DEVICE_ENABLE
-
 // clang-format off
-/** \brief COLEMAK-DH layout (3 rows, 10 columns). */
-#define LAYOUT_LAYER_BASE                                                                     \
-       KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y, KC_BSPC, \
-       KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O, \
-       KC_X,    KC_C,    KC_D,    KC_V,    KC_Z,    KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, \
-                      OS_LSFT,  KC_ENT, ESC_NAV, TAB_SYM,  KC_SPC
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
@@ -72,38 +63,12 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define ______________HOME_ROW_GACS_R______________ KC_RALT, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI
 #define ___________TRANSPARENT_THUMB_ROW___________ _______, _______, _______, _______, _______
 
-/**
- * \brief Function layer.
- *
- * Secondary right-hand layer has function keys mirroring the numerals on the
- * primary layer with extras on the pinkie column, plus system keys on the inner
- * column. App is on the tertiary thumb key and other thumb keys are duplicated
- * from the base layer to enable auto-repeat.
- */
-#define LAYOUT_LAYER_FUNCTION                                                                 \
-    _______________DEAD_HALF_ROW_______________, KC_PSCR,   KC_F7,   KC_F8,   KC_F9,  KC_F12, \
-    ______________HOME_ROW_GACS_L______________, KC_SCRL,   KC_F4,   KC_F5,   KC_F6,  KC_F11, \
-    _______________DEAD_HALF_ROW_______________, KC_PAUS,   KC_F1,   KC_F2,   KC_F3,  KC_F10, \
-                      ___________TRANSPARENT_THUMB_ROW___________
-
-/**
- * \brief Media layer.
- *
- * Tertiary left- and right-hand layer is media and RGB control.  This layer is
- * symmetrical to accomodate the left- and right-hand trackball.
- */
-#define LAYOUT_LAYER_MEDIA                                                                    \
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-    KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, \
-    XXXXXXX, XXXXXXX, XXXXXXX,  EE_CLR, QK_BOOT, QK_BOOT,  EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, \
-                      _______, KC_MPLY, KC_MSTP, KC_MSTP, KC_MPLY
-
-/** \brief Mouse emulation and pointer functions. */
-#define LAYOUT_LAYER_POINTER                                                                  \
-    QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, S_D_MOD, S_D_MOD, DPI_MOD, XXXXXXX,  EE_CLR, QK_BOOT, \
-    ______________HOME_ROW_GACS_L______________, ______________HOME_ROW_GACS_R______________, \
-    _______, DRGSCRL, SNIPING, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, SNIPING, DRGSCRL, _______, \
-                      MS_BTN2, MS_BTN1, MS_BTN3, MS_BTN3, MS_BTN1
+/** \brief COLEMAK-DH layout (3 rows, 10 columns). */
+#define LAYOUT_LAYER_BASE                                                                     \
+       KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y, KC_BSPC, \
+       KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O, \
+       KC_X,    KC_C,    KC_D,    KC_V,    KC_Z,    KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, \
+                      OSS_FUN,  KC_ENT, ESC_NAV, TAB_SYM,  KC_SPC
 
 /** \brief Navigation and numeral layout. */
 #define LAYOUT_LAYER_NAVNUM                                                              \
@@ -114,10 +79,24 @@ static uint16_t auto_pointer_layer_timer = 0;
 
 /** \brief Symbols layer. */
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
-    XXXXXXX, KC_AMPR, KC_ASTR, KC_PIPE, XXXXXXX, KC_LBRC, KC_RBRC, XXXXXXX, KC_MINS,  KC_EQL, \
-    XXXXXXX,  KC_DLR, KC_PERC, KC_CIRC, KC_TILD, KC_LPRN, KC_RPRN, XXXXXXX, KC_DQUO, KC_QUOT, \
-    XXXXXXX, KC_EXLM,   KC_AT, KC_HASH, XXXXXXX, KC_LCBR, KC_RCBR, KC_SCLN, KC_COLN, KC_BSLS, \
+    XXXXXXX, KC_AMPR, KC_ASTR, KC_PIPE, XXXXXXX, KC_SCLN, KC_LCBR, KC_RCBR, KC_MINS, KC_PLUS, \
+    XXXXXXX,  KC_DLR, KC_PERC, KC_CIRC, KC_TILD,  KC_EQL, KC_LPRN, KC_RPRN, KC_DQUO, KC_QUOT, \
+    XXXXXXX, KC_EXLM,   KC_AT, KC_HASH, XXXXXXX, KC_UNDS, KC_LBRC, KC_RBRC, KC_COLN, KC_BSLS, \
                       ___________TRANSPARENT_THUMB_ROW___________
+
+/** \brief Function layer. */
+#define LAYOUT_LAYER_FUNMEDIA                                                                \
+    KC_F12,   KC_F7,   KC_F8,   KC_F9, KC_PSCR, XXXXXXX, XXXXXXX, KC_VOLU, XXXXXXX, QK_BOOT, \
+    KC_F11,   KC_F4,   KC_F5,   KC_F6, KC_SCRL, XXXXXXX, KC_MPRV, KC_VOLD, KC_MNXT,  EE_CLR, \
+    KC_F10,   KC_F1,   KC_F2,   KC_F3, KC_PAUS, XXXXXXX, XXXXXXX, KC_MUTE, XXXXXXX, XXXXXXX, \
+                      _______, _______, _______, KC_MSTP, KC_MPLY
+
+/** \brief Mouse emulation and pointer functions. */
+#define LAYOUT_LAYER_POINTER                                                                  \
+    QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, S_D_MOD, S_D_MOD, DPI_MOD, XXXXXXX,  EE_CLR, QK_BOOT, \
+    ______________HOME_ROW_GACS_L______________, ______________HOME_ROW_GACS_R______________, \
+    _______, DRGSCRL, SNIPING, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, SNIPING, DRGSCRL, _______, \
+                      MS_BTN2, MS_BTN1, MS_BTN3, MS_BTN3, MS_BTN1
 
 /**
  * \brief Sidedness definition.
@@ -180,14 +159,11 @@ const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM =
   LAYOUT_wrapper(CHORDAL_HOLD_LAYOUT);
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [LAYER_BASE] = LAYOUT_wrapper(
-    POINTER_MOD(HOME_ROW_MOD_GACS(LAYOUT_LAYER_BASE))
-  ),
-  [LAYER_FUNCTION] = LAYOUT_wrapper(LAYOUT_LAYER_FUNCTION),
+  [LAYER_BASE] = LAYOUT_wrapper(POINTER_MOD(HOME_ROW_MOD_GACS(LAYOUT_LAYER_BASE))),
   [LAYER_NAVNUM] = LAYOUT_wrapper(HOME_ROW_MOD_GACS(LAYOUT_LAYER_NAVNUM)),
-  [LAYER_MEDIA] = LAYOUT_wrapper(LAYOUT_LAYER_MEDIA),
+  [LAYER_SYMBOLS] = LAYOUT_wrapper(LAYOUT_LAYER_SYMBOLS),
+  [LAYER_FUNMEDIA] = LAYOUT_wrapper(LAYOUT_LAYER_FUNMEDIA),
   [LAYER_POINTER] = LAYOUT_wrapper(LAYOUT_LAYER_POINTER),
-  [LAYER_SYMBOLS] = LAYOUT_wrapper(HOME_ROW_MOD_GACS(LAYOUT_LAYER_SYMBOLS)),
 };
 // clang-format on
 
@@ -201,42 +177,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LALT_T(KC_DLR):
+        case LT(LAYER_FUNMEDIA, OS_LSFT):
             if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_DLR); // Send KC_DLR on tap
+                tap_code16(OS_LSFT); // Send OS_LSFT on tap
                 return false;        // Return false to ignore further processing of key
             }
             break;
-        case LALT_T(KC_DQUO):
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_DQUO);
-                return false;
-            }
-            break;
-        case LCTL_T(KC_PERC):
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_PERC);
-                return false;
-            }
-            break;
-        case LSFT_T(KC_CIRC):
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_CIRC);
-                return false;
-            }
-            break;
-        case RALT_T(KC_TILD):
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(KC_TILD);
-                return false;
-            }
-            break;
-        // case RALT_T(KC_TILD):
-        //     if (record->tap.count && record->event.pressed) {
-        //         tap_code16(KC_TILD);
-        //         return false;
-        //     }
-        //     break;
     }
     return true;
 }
