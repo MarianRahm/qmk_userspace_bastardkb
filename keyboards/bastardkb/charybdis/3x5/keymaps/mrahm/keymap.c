@@ -50,9 +50,9 @@ static uint16_t auto_pointer_layer_timer = 0;
 #    endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD
 #endif     // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
-#define ESC_NAV LT(LAYER_NAVNUM, KC_ESC)
+#define ENT_NAV LT(LAYER_NAVNUM, KC_ENT)
 #define TAB_SYM LT(LAYER_SYMBOLS, KC_TAB)
-#define OSS_FUN LT(LAYER_FUNMEDIA, OS_LSFT)
+#define ESC_FUN LT(LAYER_FUNMEDIA, KC_ESC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 
 // clang-format off
@@ -68,7 +68,7 @@ static uint16_t auto_pointer_layer_timer = 0;
        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y, KC_BSPC, \
        KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O, \
        KC_X,    KC_C,    KC_D,    KC_V,    KC_Z,    KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, \
-                      OSS_FUN,  KC_ENT, ESC_NAV, TAB_SYM,  KC_SPC
+                      OS_LSFT, ENT_NAV, ESC_FUN, TAB_SYM,  KC_SPC
 
 /** \brief Navigation and numeral layout. */
 #define LAYOUT_LAYER_NAVNUM                                                              \
@@ -175,14 +175,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *
  * This can be circumvented by intercepting the action and sending the tapped code manually.
  */
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case LT(LAYER_FUNMEDIA, OS_LSFT):
-            if (record->tap.count && record->event.pressed) {
-                tap_code16(OS_LSFT); // Send OS_LSFT on tap
-                return false;        // Return false to ignore further processing of key
-            }
-            break;
-    }
-    return true;
-}
+// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//     switch (keycode) {
+//         case LT(LAYER_FUNMEDIA, OS_LSFT):
+//             if (record->tap.count && record->event.pressed) {
+//                 tap_code16(OS_LSFT); // Send OS_LSFT on tap
+//                 return false;        // Return false to ignore further processing of key
+//             }
+//             break;
+//     }
+//     return true;
+// }
