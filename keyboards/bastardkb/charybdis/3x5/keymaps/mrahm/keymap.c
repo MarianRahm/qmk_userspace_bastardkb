@@ -33,6 +33,8 @@ enum charybdis_keymap_layers {
     LAYER_SYMBOLS,
     LAYER_FUNMEDIA,
     LAYER_POINTER,
+    LAYER_GAME_BASE,
+    LAYER_GAME_SECONDARY,
 };
 
 // Automatically enable sniping-mode on the pointer layer.
@@ -53,6 +55,9 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define ENT_NAV LT(LAYER_NAVNUM, KC_ENT)
 #define SPC_SYM LT(LAYER_SYMBOLS, KC_SPC)
 #define ESC_FUN LT(LAYER_FUNMEDIA, KC_ESC)
+#define TAB_GAS LT(LAYER_GAME_SECONDARY, KC_TAB)
+#define DOT_GAS LT(LAYER_GAME_SECONDARY, KC_TAB)
+#define TOG_GAM TG(LAYER_GAME_BASE)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 
 // clang-format off
@@ -68,7 +73,7 @@ static uint16_t auto_pointer_layer_timer = 0;
        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y, KC_BSPC, \
        KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O, \
        KC_X,    KC_C,    KC_D,    KC_V,    KC_Z,    KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, \
-                      OS_LSFT, ENT_NAV, ESC_FUN,  KC_TAB, SPC_SYM
+                      OS_LSFT, ENT_NAV, ESC_FUN, TAB_GAS, SPC_SYM
 
 /** \brief Navigation and numeral layout. */
 #define LAYOUT_LAYER_NAVNUM                                                              \
@@ -97,6 +102,20 @@ static uint16_t auto_pointer_layer_timer = 0;
     ______________HOME_ROW_GACS_L______________, ______________HOME_ROW_GACS_R______________, \
     _______, DRGSCRL, SNIPING, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, SNIPING, DRGSCRL, _______, \
                       MS_BTN2, MS_BTN1, MS_BTN3, MS_BTN3, MS_BTN1
+
+/** \brief Gaming on left split only. Base keys derived from QWERTY.*/
+#define LAYOUT_LAYER_GAME_BASE                                                                \
+     KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R, _______, _______, _______, _______,  KC_ESC, \
+    KC_LSFT,    KC_A,    KC_S,    KC_D,    KC_F, ______________HOME_ROW_GACS_R______________, \
+    KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V, _______________DEAD_HALF_ROW_______________, \
+                      KC_LALT,  KC_SPC, DOT_GAS, _______, _______
+
+/** \brief Gaming on left split only. Secondary keys and toggle for GAME_BASE. */
+#define LAYOUT_LAYER_GAME_SECONDARY                                                           \
+       KC_I,    KC_7,    KC_8,    KC_9,    KC_T, _______, _______, _______, _______, TOG_GAM, \
+       KC_L,    KC_4,    KC_5,    KC_6,    KC_G, ______________HOME_ROW_GACS_R______________, \
+       KC_J,    KC_1,    KC_2,    KC_3,    KC_M, _______________DEAD_HALF_ROW_______________, \
+                      _______, _______, _______, _______, _______
 
 /**
  * \brief Sidedness definition.
@@ -164,6 +183,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_SYMBOLS] = LAYOUT_wrapper(LAYOUT_LAYER_SYMBOLS),
   [LAYER_FUNMEDIA] = LAYOUT_wrapper(LAYOUT_LAYER_FUNMEDIA),
   [LAYER_POINTER] = LAYOUT_wrapper(LAYOUT_LAYER_POINTER),
+  [LAYER_GAME_BASE] = LAYOUT_wrapper(LAYOUT_LAYER_GAME_BASE),
+  [LAYER_GAME_SECONDARY] = LAYOUT_wrapper(LAYOUT_LAYER_GAME_SECONDARY),
 };
 // clang-format on
 
@@ -194,6 +215,10 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
         case SPC_SYM:
             return 0;
         case ESC_FUN:
+            return 0;
+        case TAB_GAS:
+            return 0;
+        case DOT_GAS:
             return 0;
         default:
             return QUICK_TAP_TERM;
